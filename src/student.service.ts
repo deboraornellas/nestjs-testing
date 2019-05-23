@@ -10,27 +10,19 @@ interface Student {
 export class StudentService {
   constructor(private apiService: ApiService) {}
 
-  public async getGPA(firstName: string, lastName: string): Promise<number> {
-    if (!firstName || !lastName) {
-      throw new Error('Incomplete student information');
-    }
-    const student = await this.getStudent(firstName, lastName);
-    return this.calculateGPA(student.grades);
-  }
-
-  async getStudent(firstName: string, lastName: string): Promise<Student> {
+  public async getGpa(firstName: string, lastName: string): Promise<number> {
     const student = await this.apiService.getStudent(firstName, lastName);
+
     if (!student || !student.grades) {
       throw new Error('Cannot find student or student grades');
     }
-    return student;
-  }
 
-  calculateGPA(grades: number[]) {
     let gpa: number = 0;
-    for (const grade of grades) {
-      gpa += grade / grades.length;
+
+    for (const grade of student.grades) {
+      gpa += grade / student.grades.length;
     }
+
     return gpa;
   }
 }
