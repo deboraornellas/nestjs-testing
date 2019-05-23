@@ -10,6 +10,10 @@ export class AppController {
     @Query('firstName') firstName: string,
     @Query('lastName') lastName: string,
   ): Promise<number> {
+    if (!firstName || !lastName) {
+      throw new Error('Incomplete student information');
+    }
+
     return await this.studentService.getGPA(firstName, lastName);
   }
 }
