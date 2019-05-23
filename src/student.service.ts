@@ -27,7 +27,7 @@ export class StudentService {
   }
 
   calculateGPA(grades: number[]) {
-    let gpa: number;
+    let gpa: number = 0;
     for (const grade of grades) {
       gpa += grade / grades.length;
     }

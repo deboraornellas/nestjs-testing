@@ -1,16 +1,39 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from '../app.controller';
 import { ApiService } from '../api.service';
-import { StudentService } from 'src/student.service';
+import { StudentService } from '../student.service';
+
+class StudentServiceMock {
+  async getGPA(firstName: string, lastName: string): Promise<any> {
+    return 3.8;
+  }
+
+  async getStudent(firstName: string, lastName: string): Promise<any> {
+    return Promise.resolve({
+      name: 'Jane Doe',
+      grades: [3.6, 3.8, 3.8, 4.0, 3.4],
+    });
+  }
+}
 
 describe('AppController', () => {
-  let app: TestingModule;
+  let appModule: TestingModule;
+  let studentService: StudentService;
+  let appController: AppController;
 
   beforeAll(async () => {
-    app = await Test.createTestingModule({
+    appModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [ApiService, StudentService],
+      providers: [
+        {
+          provide: StudentService,
+          useClass: StudentServiceMock,
+        },
+      ],
     }).compile();
+
+    studentService = appModule.get<StudentService>(StudentService);
+    appController = appModule.get<AppController>(AppController);
   });
 
   const mockQuery = {
@@ -18,23 +41,24 @@ describe('AppController', () => {
     lastName: 'Doe',
   };
 
-  const mockStudent = {
+  const mockStudent = Promise.resolve({
     name: 'Jane Doe',
     grades: [3.6, 3.8, 3.8, 4.0, 3.4],
-  };
+  });
 
   const mockGPA = 3.8;
 
   describe('getStudentGpa', () => {
     it('should return the correct GPA if the student exists', () => {
-      const appController = app.get<AppController>(AppController);
+      jest
+        .spyOn(studentService, 'getStudent')
+        .mockImplementation(() => mockStudent);
       expect(
         appController.getStudentGpa(mockQuery.firstName, mockQuery.lastName),
       ).toBe(mockGPA);
     });
 
     it('should throw an error if the student exists', () => {
-      const appController = app.get<AppController>(AppController);
       expect(
         appController.getStudentGpa(mockQuery.firstName, mockQuery.lastName),
       ).toBe(mockGPA);
