@@ -13,7 +13,6 @@ export class AppController {
     if (!firstName || !lastName) {
       throw new Error('Incomplete student information');
     }
-
-    return await this.studentService.getGPA(firstName, lastName);
+    return await this.studentService.getGpa(firstName, lastName);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { ApiService } from './api.service';
 
 interface Student {
@@ -11,10 +11,13 @@ export class StudentService {
   constructor(private apiService: ApiService) {}
 
   public async getGpa(firstName: string, lastName: string): Promise<number> {
-    const student = await this.apiService.getStudent(firstName, lastName);
+    const student: Student = await this.apiService.getStudent(
+      firstName,
+      lastName,
+    );
 
     if (!student || !student.grades) {
-      throw new Error('Cannot find student or student grades');
+      throw new HttpException('Cannot find student or student grades', 500);
     }
 
     let gpa: number = 0;

@@ -11,9 +11,6 @@ export class ApiService {
   async getStudent(firstName: string, lastName: string): Promise<Student> {
     const url = `....../get-student?firstName=${firstName}&lastName=${lastName}`;
     const response = await this.http.get(url).toPromise();
-    if (!response.data) {
-      throw new Error('API Error');
-    }
     return response.data;
   }
 }

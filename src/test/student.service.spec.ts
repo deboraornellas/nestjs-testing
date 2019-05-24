@@ -27,7 +27,7 @@ describe('StudentService', () => {
   });
 
   describe('getGpa', () => {
-    it('should ...', async () => {
+    it('should get student GPA', async () => {
       const expectedGpa = 3.8;
       const gpa = await studentService.getGpa('Jane', 'Doe');
 
