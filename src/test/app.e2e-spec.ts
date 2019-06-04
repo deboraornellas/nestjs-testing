@@ -44,13 +44,13 @@ describe('AppController (e2e)', () => {
   it('throws error if GET request does not include student name', async () => {
     return await request(app.getHttpServer())
       .get('/student/gpa?firstName=&lastName=')
-      .expect(500);
+      .expect(400);
   });
 
   it('throws error if API cannot find the student', async () => {
     const result: AxiosResponse = {
       data: {},
-      status: 201,
+      status: 200,
       statusText: 'OK',
       headers: {},
       config: {},
@@ -59,8 +59,8 @@ describe('AppController (e2e)', () => {
     jest.spyOn(httpService, 'get').mockImplementationOnce(() => of(result));
 
     return await request(app.getHttpServer())
-      .get('/student/gpa?firstName=Ana&lastName=Julia')
-      .expect(500);
+      .get('/student/gpa?firstName=Anna&lastName=Julia')
+      .expect(404);
   });
 
   it('throws error if student does not have grades assigned', async () => {
@@ -76,6 +76,6 @@ describe('AppController (e2e)', () => {
 
     return await request(app.getHttpServer())
       .get('/student/gpa?firstName=Davy&lastName=Jones')
-      .expect(500);
+      .expect(404);
   });
 });

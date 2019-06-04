@@ -17,7 +17,7 @@ export class StudentService {
     );
 
     if (!student || !student.grades) {
-      throw new HttpException('Cannot find student or student grades', 500);
+      throw new HttpException('Cannot find student or student grades', 404);
     }
 
     let gpa: number = 0;

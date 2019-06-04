@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, HttpException } from '@nestjs/common';
 import { StudentService } from './student.service';
 
 @Controller('student')
@@ -11,7 +11,7 @@ export class AppController {
     @Query('lastName') lastName: string,
   ): Promise<number> {
     if (!firstName || !lastName) {
-      throw new Error('Incomplete student information');
+      throw new HttpException('Incomplete student information', 400);
     }
     return await this.studentService.getGpa(firstName, lastName);
   }
