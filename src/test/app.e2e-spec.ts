@@ -12,13 +12,13 @@ describe('AppController (e2e)', () => {
   let httpService: HttpService;
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+    const mockAppModule: TestingModule = await Test.createTestingModule({
       imports: [AppModule, HttpModule],
       providers: [ApiService, StudentService],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
-    httpService = moduleFixture.get<HttpService>(HttpService);
+    app = mockAppModule.createNestApplication();
+    httpService = mockAppModule.get<HttpService>(HttpService);
     await app.init();
   });
 
@@ -50,8 +50,8 @@ describe('AppController (e2e)', () => {
   it('throws error if API cannot find the student', async () => {
     const result: AxiosResponse = {
       data: {},
-      status: 200,
-      statusText: 'OK',
+      status: 404,
+      statusText: '',
       headers: {},
       config: {},
     };

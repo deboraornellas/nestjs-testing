@@ -3,7 +3,7 @@ import { ApiService } from '../api.service';
 import { StudentService } from '../student.service';
 
 class ApiServiceMock {
-  getStudent(firstName: string, lastName: string) {
+  async getStudent(firstName: string, lastName: string) {
     return {
       name: 'Jane Doe',
       grades: [3.7, 3.8, 3.9, 4.0, 3.6],
